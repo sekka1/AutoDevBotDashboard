@@ -7,3 +7,18 @@
     height: 250px;
     margin-top: 35px;
 }
+
+.dash-stats .toolbar .btn-link {
+    font-family: "Open Sans";
+    font-weight: 400;
+    padding: 2px 10px;
+    color: #9ca4af;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 17px;    
+}
+
+.dash-stats .toolbar .btn-link [class^="fa-icon-"], .text-boxes .text-box .toolbar .btn-link > [class*=" fa-icon-"] {
+    color: #8dc153;
+    margin-right: 10px;
+}

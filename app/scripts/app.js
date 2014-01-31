@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('autoDevBotDashboardApp', [
+var adb = angular.module('autoDevBotDashboardApp', [
   'ngCookies',
   'ngSanitize',
   'ngRoute'

@@ -59,5 +59,34 @@
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <!-- endbuild -->
+    <script src="http://api.autodevbot.com/socket.io/socket.io.js" type="text/javascript"></script>
+    // <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"></script>
+    <script type="text/javascript">
+        socketIO = io.connect('http://api.autodevbot.com/');
+
+        socketIO.on('data', function (data) {
+            console.log(data);
+        });
+
+        socketIO.on('error', function (reason){
+            console.error('Unable to connect Socket.IO', reason);
+        });
+
+        socketIO.on('connect', function (){
+            console.info('successfully established a working and authorized connection');
+        });
+
+        socketIO.emit('getTopLevelDashboardData');
+        socketIO.emit('getMonitoringEvents');
+
+        socketIO.on('getTopLevelDashboardData_stat', function(data){
+            $('#TopLevelDashboard').text('getTopLevelDashboardData_stat: ' + data);
+        });
+        socketIO.on('getMonitoringEvents_stat', function(data){
+            $('#MonitoringEvents').text('MonitoringEvents_stat: ' + data);
+        });
+
+    </script>
+
 </body>
 </html>

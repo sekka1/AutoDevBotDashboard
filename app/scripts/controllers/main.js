@@ -7,4 +7,11 @@ angular.module('autoDevBotDashboardApp')
       'AngularJS',
       'Karma'
     ];
+
+    $scope.incidents = [];
+    
+    socket.on('msg', function(data) {
+        $scope.incidents = JSON.parse(data.msg); // change data.msg to whatever is returned in api JSON
+    });
+
   });
