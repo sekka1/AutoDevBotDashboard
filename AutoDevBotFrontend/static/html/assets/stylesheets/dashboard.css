@@ -22,3 +22,10 @@
     color: #8dc153;
     margin-right: 10px;
 }
+
+tr.even td {
+    background-color: green;
+}
+tr.odd td {
+    background-color: yellow;
+}
