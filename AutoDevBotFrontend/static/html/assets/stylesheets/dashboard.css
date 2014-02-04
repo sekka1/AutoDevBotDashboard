@@ -29,3 +29,7 @@ tr.even td {
 tr.odd td {
     background-color: yellow;
 }
+
+#realtimechart {
+    height: 210px;
+}
