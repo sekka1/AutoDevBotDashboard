@@ -48,3 +48,18 @@
 #main-content {
     padding: 10px 0 80px 0;
 }
+
+#main-content h2 {
+    border-bottom: solid 1px;
+    border-bottom-color: darkgrey;
+}
+
+#ds-red {
+    font-size: 1.5em;
+    color: #f23c25 !important;
+}
+
+#ds-green {
+    font-size: 1.5em;
+    color: #66ce39 !important;
+}
