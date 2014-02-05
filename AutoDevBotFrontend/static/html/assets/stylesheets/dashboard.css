@@ -23,13 +23,14 @@
     margin-right: 10px;
 }
 
-tr.even td {
-    background-color: green;
-}
-tr.odd td {
-    background-color: yellow;
-}
-
 #realtimechart {
     height: 210px;
+}
+
+.dataTables_filter {
+    display: none;
+}
+
+#list1_length {
+    display: none;   
 }
