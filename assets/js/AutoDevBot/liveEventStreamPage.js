@@ -31,8 +31,7 @@ $( document ).ready(function() {
     //console.log('token: '+token);
 
     // Connect to the socket.io interface
-    //var socket = io.connect('https://api.autodevbot.com');
-    var socket = io.connect('http://localhost:8080');
+    var socket = io.connect('https://api.autodevbot.com');
 
     // Subscribe to the event stream with the user's id and authToken
     socket.emit('subscribe-event-stream', {user_id: QueryString.user_id, authToken: token});

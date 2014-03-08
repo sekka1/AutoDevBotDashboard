@@ -31,7 +31,7 @@
 	<![endif]-->
 
     <!-- start: Favicon and Touch Icons -->
-    <link href='assets/images/meta_icons/favicon.ico' rel='shortcut icon' type='image/x-icon'>
+    <link href='assets/ico/favicon.ico' rel='shortcut icon' type='image/x-icon'>
     <!-- end: Favicon and Touch Icons -->
 		
 </head>
@@ -121,8 +121,7 @@
                 $( "#submitAction" ).click(function() {
 
                     $.ajax({
-                        //url: 'https://api.autodevbot.com/v1.0/authenticate',
-                        url: 'http://localhost:8080/v1.0/authenticate',
+                        url: 'https://api.autodevbot.com/v1.0/authenticate',
                         type: 'post',
                         data: $('form#loginForm').serialize(),
                         success: function(response) {
@@ -156,9 +155,7 @@
                                 console.log('server msg: '+serverResponse.error.title);
 
                                 $("#loginBox").prepend('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert">×</button><strong>Invalid Credentials!</strong> Please check if you have entered the correct username and password.</div>');
-
                             }
-
                         }
                     });
                     return false; // prevent page reload
