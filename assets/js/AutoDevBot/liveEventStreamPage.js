@@ -1,5 +1,8 @@
 $( document ).ready(function() {
 
+    /**
+     * Returns query string parameters
+     */
     var QueryString = function () {
         // This function is anonymous, is executed immediately and
         // the return value is assigned to QueryString!
@@ -23,14 +26,16 @@ $( document ).ready(function() {
         return query_string;
     } ();
 
-    console.log(QueryString.user_id);
-    console.log(QueryString.temp_key);
+    var token = QueryString.token+'='; // Need to add back trailing = to all token.  Query parser is splitting on '='
+    //console.log('user_id: '+QueryString.user_id);
+    //console.log('token: '+token);
 
     // Connect to the socket.io interface
-    var socket = io.connect('https://api.autodevbot.com');
+    //var socket = io.connect('https://api.autodevbot.com');
+    var socket = io.connect('http://localhost:8080');
 
-    //socket.emit('subscribe-event-stream', {user_id:'b9e45b2320a544b8b017fbf60fb04247', authToken:'5502ebcd7ba71584964731f1a34197c5'});
-    socket.emit('subscribe-event-stream', {user_id: QueryString.user_id, authToken: QueryString.temp_key});
+    // Subscribe to the event stream with the user's id and authToken
+    socket.emit('subscribe-event-stream', {user_id: QueryString.user_id, authToken: token});
 
     socket.on('subscribe-event-stream', function (data) {
         //console.log(data);

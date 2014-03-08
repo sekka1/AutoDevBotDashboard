@@ -29,14 +29,10 @@
 		<script src="assets/css/ie6-8.css"></script>
 		
 	<![endif]-->
-	
-	<!-- start: Favicon and Touch Icons -->
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" href="http://localhost:8888/bootstrap/simpliq2/ico/apple-touch-icon-57-precomposed.png">
-	<link rel="shortcut icon" href="http://localhost:8888/bootstrap/simpliq2/ico/favicon.png">
-	<!-- end: Favicon and Touch Icons -->	
+
+    <!-- start: Favicon and Touch Icons -->
+    <link href='assets/images/meta_icons/favicon.ico' rel='shortcut icon' type='image/x-icon'>
+    <!-- end: Favicon and Touch Icons -->
 		
 </head>
 
@@ -45,14 +41,16 @@
 		<div class="row">
 					
 			<div class="row">
-				<div class="login-box">
+
+				<div class="login-box" id="loginBox">
+
 					<h2>Login to your account</h2>
-					<form class="form-horizontal" action="dashboard.html" method="post">
+					<form id="loginForm" class="form-horizontal" action="dashboard.html" method="post">
 						<fieldset>
 							
-							<input class="input-large col-xs-12" name="username" id="username" type="text" placeholder="type username"/>
+							<input class="input-large col-xs-12" name="email" id="email" type="text" placeholder="Email"/>
 
-							<input class="input-large col-xs-12" name="password" id="password" type="password" placeholder="type password"/>
+							<input class="input-large col-xs-12" name="password" id="password" type="password" placeholder="Password"/>
 
 							<div class="clearfix"></div>
 							
@@ -60,14 +58,14 @@
 							
 							<div class="clearfix"></div>
 							
-							<button type="submit" class="btn btn-primary col-xs-12">Login</button>
+							<button id="submitAction" type="submit" class="btn btn-primary col-xs-12">Login</button>
 						</fieldset>	
 
 					</form>
 					<hr>
 					<h3>Forgot Password?</h3>
 					<p>
-						No problem, <a href="login.html#">click here</a> to get a new password.
+						No problem, email <a href="mailto:support@autodevbot.com">support@AutoDevBot.com</a> to get a new password.
 					</p>	
 				</div>
 			</div><!--/row-->
@@ -114,7 +112,63 @@
 	<!-- theme scripts -->
 	<script src="assets/js/custom.min.js"></script>
 	<script src="assets/js/core.min.js"></script>
-		
+
+
+        <script>
+
+            $( document ).ready(function() {
+
+                $( "#submitAction" ).click(function() {
+
+                    $.ajax({
+                        //url: 'https://api.autodevbot.com/v1.0/authenticate',
+                        url: 'http://localhost:8080/v1.0/authenticate',
+                        type: 'post',
+                        data: $('form#loginForm').serialize(),
+                        success: function(response) {
+                            //console.log(response);
+
+                            var returnObj = JSON.parse(response);
+
+                            console.log('statusCode: '+returnObj.statusCode);
+                            console.log('user_id: '+returnObj.user.id);
+                            console.log('token: '+returnObj.token.id);
+
+                            if(returnObj.statusCode == 200){
+                                // Was successful creating a user
+
+                                window.location.href = 'https://api.autodevbot.com/dashboard/live.html?user_id='+returnObj.user.id+'&token='+returnObj.token.id;
+                            }else{
+                                console.log('There was an error with authentication');
+                            }
+                        },
+                        error: function (request, status, error) {
+                            console.log('There was an error with authentication');
+                            //console.log('status code: '+status);
+                            //console.log(error);
+                            console.log(request.responseText);
+
+                            serverResponse = JSON.parse(request.responseText);
+
+                            if(serverResponse.statusCode==401
+                                    || serverResponse.statusCode==400){
+                                console.log('Invalid username or password');
+                                console.log('server msg: '+serverResponse.error.title);
+
+                                $("#loginBox").prepend('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert">×</button><strong>Invalid Credentials!</strong> Please check if you have entered the correct username and password.</div>');
+
+                            }
+
+                        }
+                    });
+                    return false; // prevent page reload
+                });
+            });
+
+
+        </script>
+
+
 	<!-- end: JavaScript-->
 	
 </body>
