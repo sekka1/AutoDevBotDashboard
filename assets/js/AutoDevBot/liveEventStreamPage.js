@@ -49,11 +49,11 @@ $( document ).ready(function() {
 
             if(event.testStatus.toLowerCase() == 'success'){
                 // Success row
-                $('#tableEvents').prepend('<tr><td>'+event.queue_event_id.substring(0,10)+'</td><td>'+event.eventType+'</td><td>'+event.createdOn+'</td><td><span class="label label-success">'+event.testStatus+'</span></td><td>'+event.testResultJSON.testsuites.testsuite[0].$.name+'</td><td>-</td></tr>');
+                $('#tableEvents').prepend('<tr><td>'+event.queue_event_id.substring(0,5)+'...'+event.queue_event_id.substring(event.queue_event_id.length-3,event.queue_event_id.length)+'</td><td>'+event.eventType+'</td><td>'+event.createdOn+'</td><td><span class="label label-success">'+event.testStatus+'</span></td><td>'+event.testResultJSON.testsuites.testsuite[0].$.name+'</td><td>-</td></tr>');
             }
             if(event.testStatus.toLowerCase() == 'failure'){
                 // Failure row
-                $('#tableEvents').prepend('<tr><td>'+event.queue_event_id.substring(0,10)+'</td><td>'+event.eventType+'</td><td>'+event.createdOn+'</td><td><span class="label label-danger">'+event.testStatus+'</span></td><td>'+event.testResultJSON.testsuites.testsuite[0].$.name+'</td><td>'+event.testResultJSON.testsuites.testsuite[0].testcase[0].failure+'</td></tr>');
+                $('#tableEvents').prepend('<tr><td>'+event.queue_event_id.substring(0,5)+'...'+event.queue_event_id.substring(event.queue_event_id.length-3,event.queue_event_id.length)+'</td><td>'+event.eventType+'</td><td>'+event.createdOn+'</td><td><span class="label label-danger">'+event.testStatus+'</span></td><td>'+event.testResultJSON.testsuites.testsuite[0].$.name+'</td><td>'+event.testResultJSON.testsuites.testsuite[0].testcase[0].failure+'</td></tr>');
             }
         }else if(event.eventType.toLowerCase() == 'system_provisioning'){
             $('#tableEvents').prepend('<tr><td>-</td><td>'+event.eventType+'</td><td>'+event.createdOn+'</td><td><span class="label label-default">'+event.status+'</span></td><td>'+event.item+'</td><td>'+event.description+'</td></tr>');
