@@ -26,6 +26,9 @@ $( document ).ready(function() {
         return query_string;
     } ();
 
+    // Set users github repo
+    $('#githubRepo').prepend('Your GitHub Repository: <a href="https://github.com/AutoDevBot/'+QueryString.user_id+'">https://github.com/AutoDevBot/'+QueryString.user_id+'</a>');
+
     var token = QueryString.token+'='; // Need to add back trailing = to all token.  Query parser is splitting on '='
     //console.log('user_id: '+QueryString.user_id);
     //console.log('token: '+token);
