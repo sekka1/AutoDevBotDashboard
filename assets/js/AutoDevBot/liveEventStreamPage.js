@@ -26,18 +26,32 @@ $( document ).ready(function() {
         return query_string;
     } ();
 
-    // Set users github repo
-    $('#githubRepo').prepend('Your GitHub Repository: <a href="https://github.com/AutoDevBot/'+QueryString.user_id+'">https://github.com/AutoDevBot/'+QueryString.user_id+'</a>');
+    /**
+     * Set Cookies
+     */
+    $.cookie('user_id', QueryString.user_id, { expires: 7, path: '/' });
+    $.cookie('token', QueryString.token, { expires: 7, path: '/' });
 
+    // Setting vars
     var token = QueryString.token;
-    //console.log('user_id: '+QueryString.user_id);
-    //console.log('token: '+token);
+    var user_id = QueryString.user_id;
+
+    if($.cookie('user_id') !== undefined)
+        user_id = $.cookie('user_id');
+    if($.cookie('token') !== undefined)
+        token = $.cookie('token');
+
+    console.log(user_id);
+
+
+    // Set users github repo
+    $('#githubRepo').prepend('Your GitHub Repository: <a href="https://github.com/AutoDevBot/'+user_id+'">https://github.com/AutoDevBot/'+user_id+'</a>');
 
     // Connect to the socket.io interface
     var socket = io.connect('https://api.autodevbot.com');
 
     // Subscribe to the event stream with the user's id and authToken
-    socket.emit('subscribe-event-stream', {user_id: QueryString.user_id, authToken: token});
+    socket.emit('subscribe-event-stream', {user_id: user_id, authToken: token});
 
     socket.on('subscribe-event-stream', function (data) {
         //console.log(data);
