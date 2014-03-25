@@ -45,7 +45,7 @@ $( document ).ready(function() {
 
 
     // Set users github repo
-    $('#githubRepo').prepend('Your GitHub Repository: <a href="https://github.com/AutoDevBot/'+user_id+'">https://github.com/AutoDevBot/'+user_id+'</a>');
+    $('#githubRepo').prepend('Your GitHub Repository: <a target="_blank" href="https://github.com/AutoDevBot/'+user_id+'">https://github.com/AutoDevBot/'+user_id+'</a>');
 
     // Connect to the socket.io interface
     var socket = io.connect('https://api.autodevbot.com');
