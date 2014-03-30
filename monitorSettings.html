@@ -126,8 +126,10 @@
 							<li class="dropdown-menu-title">
 
 							</li>
-							<li><a href="#"><i class="icon-user"></i> Profile</a></li>
-							<li><a href="#"><i class="icon-cog"></i> Settings</a></li>
+                            <!--
+                            <li><a href="#"><i class="icon-user"></i> Profile</a></li>
+                            <li><a href="#"><i class="icon-cog"></i> Settings</a></li>
+                            -->
 							<li><a href="login.html"><i class="icon-off"></i> Logout</a></li>
 						</ul>
 					</li>
@@ -203,7 +205,7 @@
 
                                                 <div class="col-md-1 col-sm-2 col-xs-3">
                                                     <label class="switch switch-success">
-                                                        <input type="checkbox" class="switch-input" checked>
+                                                        <input type="checkbox" class="switch-input" name="isEnabled" id="isEnabled" checked>
                                                         <span class="switch-label" data-on="On" data-off="Off"></span>
                                                         <span class="switch-handle"></span>
                                                     </label>
@@ -213,9 +215,9 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label" for="focusedInput">Run monitor(s) every "X" minute</label>
+                                            <label class="control-label">Run monitor(s) every "X" minute</label>
                                             <div class="controls">
-                                                <input class="form-control focused" id="focusedInput" type="text" value="5">
+                                                <input class="form-control focused" id="interval" type="text" value="5">
                                             </div>
                                         </div>
 
@@ -304,6 +306,7 @@
         <script src="assets/js/jquery.dataTables.min.js"></script>
         <script src="assets/js/dataTables.bootstrap.min.js"></script>
         <script src="assets/js/uncompressed/jquery.blockUI.js"></script>
+        <script src="assets/js/jquery.cookie.min.js"></script>
 	
 	<!-- theme scripts -->
 	<script src="assets/js/custom.min.js"></script>
@@ -328,6 +331,13 @@
             $(document).ready(function() {
 
                 $('#monitor_interval').block({ message: 'Comming Soon' });
+
+                // Set values for this page
+                var userObj = JSON.parse($.cookie('userObj'));
+                $('#interval').val(userObj.monitors.interval);
+                $('#isEnabled').attr('checked', userObj.monitors.isEnabled);
+
+
             });
         </script>
 

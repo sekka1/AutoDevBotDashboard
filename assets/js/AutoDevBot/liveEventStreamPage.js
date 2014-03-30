@@ -57,6 +57,8 @@ $( document ).ready(function() {
         //console.log(data);
         var event = JSON.parse(data);
 
+        console.log(event);
+
         console.log('user_id: '+event.user_id);
 
         if(event.eventType.toLowerCase() == 'monitoring_frisbyjs'){
@@ -78,4 +80,29 @@ $( document ).ready(function() {
         console.log('rowCount: '+rowCount);
         $("#tableEvents tr:eq(20)").remove();
     });
+
+    // Get user object and store it
+    $.ajax({
+        url: 'https://api.autodevbot.com/v1.0/user',
+        type: 'get',
+        headers:{
+            "Content-type": "application/json",
+            "X-Auth-Token": $.cookie('token')
+        },
+        success: function(response) {
+            console.log(response);
+
+            // Set the users object cookies
+            $.cookie('userObj', response, { expires: 7, path: '/' });
+        },
+        error: function (request, status, error) {
+            //console.log('There was an error with authentication');
+            console.log('status code: '+status);
+            console.log(error);
+            console.log(request);
+
+
+        }
+    });
+
 });

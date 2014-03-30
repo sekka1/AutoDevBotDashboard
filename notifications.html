@@ -126,8 +126,10 @@
 							<li class="dropdown-menu-title">
 
 							</li>
-							<li><a href="#"><i class="icon-user"></i> Profile</a></li>
-							<li><a href="#"><i class="icon-cog"></i> Settings</a></li>
+                            <!--
+                            <li><a href="#"><i class="icon-user"></i> Profile</a></li>
+                            <li><a href="#"><i class="icon-cog"></i> Settings</a></li>
+                            -->
 							<li><a href="login.html"><i class="icon-off"></i> Logout</a></li>
 						</ul>
 					</li>
@@ -180,6 +182,8 @@
 			<!-- start: Content -->
 			<div id="content" class="col-lg-10 col-sm-11">
 
+                <div id="eventNotification"></div>
+
 
                 <h1>Notifications Settings</h1>
 
@@ -193,7 +197,7 @@
 
 
                             <div class="box-content">
-                                <form class="form-horizontal">
+                                <form id="form1" class="form-horizontal">
                                     <fieldset class="col-sm-12">
 
                                         <div class="form-group">
@@ -202,7 +206,7 @@
 
                                                 <div class="col-md-1 col-sm-2 col-xs-3">
                                                     <label class="switch switch-success">
-                                                        <input type="checkbox" class="switch-input" checked>
+                                                        <input type="checkbox" class="switch-input" name="isEnabled" id="isEnabled" checked>
                                                         <span class="switch-label" data-on="On" data-off="Off"></span>
                                                         <span class="switch-handle"></span>
                                                     </label>
@@ -212,16 +216,16 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label" for="focusedInput">Email Address</label>
+                                            <label class="control-label">Email Address (only one email address is allowed)</label>
                                             <div class="controls">
-                                                <input class="form-control focused" id="focusedInput" type="text" value="Email Address">
+                                                <input class="form-control focused" type="text" value="Email Address" name="email" id="emailAddress">
                                             </div>
                                         </div>
 
                                     </fieldset>
 
                                     <div class="form-actions">
-                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                        <button type="submit" class="btn btn-primary" id="saveNotifications">Save changes</button>
                                         <button type="reset" class="btn">Cancel</button>
                                     </div>
 
@@ -302,6 +306,7 @@
         <script src="assets/js/jquery.dataTables.min.js"></script>
         <script src="assets/js/dataTables.bootstrap.min.js"></script>
         <script src="assets/js/uncompressed/jquery.blockUI.js"></script>
+        <script src="assets/js/jquery.cookie.min.js"></script>
 	
 	<!-- theme scripts -->
 	<script src="assets/js/custom.min.js"></script>
@@ -323,7 +328,60 @@
         <script type="text/javascript">
             $(document).ready(function() {
 
-                $('#notification_email').block({ message: 'Comming Soon' });
+                //$('#notification_email').block({ message: 'Comming Soon' });
+
+                // Set values for this page
+                var userObj = JSON.parse($.cookie('userObj'));
+                $('#emailAddress').val(userObj.notifications.email[0]);
+                $('#isEnabled').attr('checked', userObj.notifications.isEnabled);
+
+                // Save data
+                $( "#saveNotifications" ).click(function() {
+
+                    var postObj = new Object();
+                    postObj.isEnabled = true;
+                    postObj.email = [$('#emailAddress').val()];
+
+                    if($('#isEnabled').prop('checked') === true){
+                        postObj.isEnabled = true;
+                    }else{
+                        postObj.isEnabled = false;
+                    }
+
+                    console.log(postObj);
+
+                    $.ajax({
+                        url: 'https://api.autodevbot.com/v1.0/notification',
+                        type: 'post',
+                        headers:{
+                            "Content-type": "application/json",
+                            "X-Auth-Token": $.cookie('token')
+                        },
+                        data: JSON.stringify(postObj),
+                        success: function(response) {
+
+                            console.log('success');
+                            console.log(response);
+
+                            var returnObj = JSON.parse(response);
+                            console.log(returnObj);
+
+                            $('#eventNotification').append('<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">×</button> Notification saved</div>');
+                        },
+                        error: function (request, status, error) {
+                            //console.log('There was an error with authentication');
+                            console.log('status code: '+status);
+                            console.log(error);
+                            console.log(request);
+
+                            $('#eventNotification').append('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert">×</button> There was an error saving...</div>');
+                        }
+                    });
+
+                    return false; // prevent page reload
+                });
+
+
             });
         </script>
 	
