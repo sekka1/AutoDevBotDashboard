@@ -183,30 +183,15 @@
 			<!-- start: Content -->
 			<div id="content" class="col-lg-10 col-sm-11">
 
-                <div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert">×</button> Have you seen the <strong><a href="https://github.com/AutoDevBot/monitor-examples" target="_blank">How to Use AutoDevBot Guide</a></strong>?</div>
+                <!--<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert">×</button> Have you seen the <strong><a href="https://github.com/AutoDevBot/monitor-examples" target="_blank">How to Use AutoDevBot Guide</a></strong>?</div>-->
 
-                <h1>Dashboard</h1>
-
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="box">
-                            <div class="box-header" data-original-title>
-                                <h2><i class="icon-user"></i><span class="break"></span>Github Repository</h2>
-                            </div>
-                            <div class="box-content" id="githubRepo">
-
-                            </div>
-                        </div>
-                    </div><!--/col-->
-
-                </div><!--/row-->
-
+                <h1>Events</h1>
 
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="box">
                             <div class="box-header" data-original-title>
-                                <h2><i class="icon-user"></i><span class="break"></span>Event Stream</h2>
+                                <h2><i class="icon-user"></i><span class="break"></span>Failure events in the last 6 hours</h2>
                             </div>
                             <div class="box-content">
                                 <table class="table table-striped table-bordered bootstrap-datatable " id="tableEvents">
@@ -317,13 +302,6 @@
         <!-- inline scripts related to this page -->
         <script src="assets/js/pages/table.js"></script>
 
-    <!-- Chart data functions -->
-	<script src="assets/js/AutoDevBot/liveEventStreamPage.js"></script>
-
-
-        <!-- Socket.io client -->
-        <script src="https://api.autodevbot.com/socket.io/socket.io.js"></script>
-
 	<!-- end: JavaScript-->
 
         <!-- CrazyEgg -->
@@ -334,6 +312,52 @@
                 a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
         </script>
 
+        <!-- Events Table -->
+        <script type="text/javascript">
+            $( document ).ready(function() {
+
+                // Set start time
+                var now = new Date();
+                var startTimeUnixTime = Date.parse(now); // Returns unix time format
+
+                // Get user object and store it
+                $.ajax({
+                    url: 'https://api.autodevbot.com/v1.0/monitorData/failure/'+startTimeUnixTime+'/6',
+                    type: 'get',
+                    headers:{
+                        "Content-type": "application/json",
+                        "X-Auth-Token": $.cookie('token')
+                    },
+                    success: function(response) {
+                        //console.log(response);
+
+                        // Set the users object cookies
+                        //$.cookie('userObj', response, { expires: 7, path: '/' });
+
+                        eventsObject = JSON.parse(response);
+
+                        eventsObject.failureItems.forEach(function(item){
+                            console.log(item);
+
+                            $('#tableEvents').prepend('<tr><td>'+item.dbCreatedOn+'</td><td>Monitoring_Frisbyjs</td><td>'+item.createdOn+'</td><td><span class="label label-danger">'+item.testStatus+'</span></td><td>'+item.testResultJSON.testsuites.testsuite[0].$.name+'</td><td>'+item.testResultJSON.testsuites.testsuite[0].testcase[0].failure+'</td></tr>');
+
+                        });
+
+
+                    },
+                    error: function (request, status, error) {
+                        //console.log('There was an error with authentication');
+                        console.log('status code: '+status);
+                        console.log(error);
+                        console.log(request);
+
+
+                    }
+                });
+
+            });
+
+        </script>
 	
 </body>
 </html>
